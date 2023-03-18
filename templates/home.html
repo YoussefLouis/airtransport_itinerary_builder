@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Itinerary Builder Model</title>
+  </head>
+
+
+
+  <body>
+
+    <div class="container">
+      <br><br>
+    </div>
+
+    <div class="container">
+      <h3>Itinerary Builder Model</h3>
+      <p>
+        Welcome. This web app is designed to calculate all available itineraries between an indicated city pair in a particular market,
+        or between all city pairs in the market.
+        Furthermore, it calculates the selection probability of each of the available itineraries to indicate the itinierary most
+        likely to be chosen for the selected city pair.
+        This can help airline management determine a market's competition to assess entry criteria.
+      </p>
+      <br>
+    </div>
+
+    <div class="container">
+      <h3>Select City Pair</h3>
+      <div class="row">
+        <div class="col-sm">
+          <form action="" method="post" id="city_pair_form">
+            <select id="city_pair_from_slct" name="city_pair_from_slct">
+              {% for city_pair in city_pairs %}
+              <option value="{{city_pair[0]}}">{{city_pair[0]}}</option>
+              {% endfor %}
+            </select>
+          <input class="nav-input nav-link fa fa-home" type="submit" name="reset_btn" value="Reset">
+          </form>
+        </div>
+        <div class="col-sm">
+          <img src="/static/carpetplottawy.png"/>
+        </div>
+      </div>
+    </div>
+
+</html>
