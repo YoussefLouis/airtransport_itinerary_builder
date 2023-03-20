@@ -9,13 +9,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/styles.css">
     <title>Itinerary Builder Model</title>
+    <script src="https://cdn.jsdelivr.net/gh/akjpro/form-anticlear/base.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/static/main.js"></script>
+    
+    -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+
   </head>
 
 
 
   <body>
 
+
+
     <div class="container">
+      {% if error %} 
+      <div class="error-cont">
+        
+        {{error}}
+        
+      </div>
+      {% endif %}
       <br><br>
     </div>
 
@@ -33,21 +53,133 @@
 
     <div class="container">
       <h3>Select City Pair</h3>
-      <div class="row">
-        <div class="col-sm">
-          <form action="" method="post" id="city_pair_form">
-            <select id="city_pair_from_slct" name="city_pair_from_slct">
-              {% for city_pair in city_pairs %}
-              <option value="{{city_pair[0]}}">{{city_pair[0]}}</option>
+
+
+      <form class="form-horizontal form-anticlear" action="" method="post" id="city_pair_form">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="selector1">From:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="first_city" name="first_city">
+              {% for city in cities %}
+              <option value="{{city}}">{{city}}</option>
               {% endfor %}
             </select>
-          <input class="nav-input nav-link fa fa-home" type="submit" name="reset_btn" value="Reset">
-          </form>
+          </div>
+          <label class="control-label col-sm-2" for="selector2">To:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="second_city" name="second_city">
+              {% for city in cities %}
+              <option value="{{city}}">{{city}}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
-        <div class="col-sm">
-          <img src="/static/carpetplottawy.png"/>
+        
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Get Probabilities</button>
+          </div>
         </div>
-      </div>
-    </div>
 
+
+      </form>
+
+      <div class="container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 table-responsive">  
+              <h4>Estimated City Pair Demand: <b>{{demand}}</b></h4>
+              <h4>Market HHI Score: <b>{{hhi}}</b></h4>
+              <h3>Market Airlines' QSIs</h3>
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Airline</th>
+                    <th>Probability</th>
+                    <th>QSI</th>
+                    <th>Demand</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for qsi in qsis %}
+                  <tr>
+                    <th>{{qsi[4]}}</th>
+                    <th>{{qsi[0]}}%</th>
+                    <th>{{qsi[1]}}</th>
+                    <th>{{qsi[3]}}</th>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-4">
+              <div class="img-container">
+              <img src="/static/qsis_pie.png"/>
+              </div>
+              <div class="img-container">
+              <img src="/static/itns_pie.png"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+        <div class="container">
+          <h3>Itinerary Scoring</h3>
+  
+          <div class="table-responsive table-container">
+    
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>{{itn_prbs_columns[20]}}</th>
+                  <th>{{itn_prbs_columns[0]}}</th>
+                  <th>{{itn_prbs_columns[2]}}</th>
+                  <th>{{itn_prbs_columns[5]}}</th>
+                  <th>{{itn_prbs_columns[7]}}</th>
+                  <th>{{itn_prbs_columns[8]}}</th>
+                  <th>{{itn_prbs_columns[10]}}</th>
+                  <th>{{itn_prbs_columns[11]}}</th>
+                  <th>{{itn_prbs_columns[13]}}</th>
+                  <th>{{itn_prbs_columns[15]}}</th>
+                  <th>{{itn_prbs_columns[16]}}</th>
+                  <th>{{itn_prbs_columns[17]}}</th>
+                  <th>{{itn_prbs_columns[57]}}</th>
+                  <th>{{itn_prbs_columns[59]}}</th>
+                  <th>{{itn_prbs_columns[60]}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for itn_prb in itn_prbs %}
+                <tr>
+                  <td><b>{{itn_prb[20]}}</b></td>
+                  <td>{{itn_prb[0]}}</td>
+                  <td>{{itn_prb[2]}}</td>
+                  <td>{{itn_prb[5]}}</td>
+                  <td>{{itn_prb[7]}}</td>
+                  <td>{{itn_prb[8]}}</td>
+                  <td>{{itn_prb[10]}}</td>
+                  <td>{{itn_prb[11]}}</td>
+                  <td>{{itn_prb[13]}}</td>
+                  <td>{{itn_prb[15]}}</td>
+                  <td>{{itn_prb[16]}}</td>
+                  <td>{{itn_prb[17]}}</td>
+                  <td>{{itn_prb[57]}}</td>
+                  <td><b>{{itn_prb[59]}}%</b></td>
+                  <td>{{itn_prb[60]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    
+            <br>
+          </div>
+        </div>
+
+
+    </div>
+    <br><br><br>
+  </body>
 </html>

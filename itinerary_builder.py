@@ -35,6 +35,8 @@ import time
 routes_filename = "routes.xlsx"
 distances_filename = "distances.xlsx"
 coefficients_filename = "coefficients.xlsx"
+demands_filename = "demands.xlsx"
+
 regional_jet_capacity = 110     # Defines what's a regional jet over a narrow-body airliner
 dummy_date = "2023-01-01"       # Used to create datetime objects as the model is deisnged over 1 day
 
@@ -224,7 +226,7 @@ def get_city_pair_itineraries(routes_df, city_pair, airlines):
     return resultant_itns
 
 
-def get_city_pair_probabilities(city_pair_itns, coefficients):
+def get_city_pair_probabilities(city_pair_itns, coefficients, demand=0):
     city_pair_itns.reset_index(drop=True, inplace=True)
     city_pair_itns.drop('id', inplace=True, axis=1)
     city_pair_itns['itn_no'] = range(1, len(city_pair_itns) + 1)
@@ -291,12 +293,14 @@ def get_city_pair_probabilities(city_pair_itns, coefficients):
     city_pair_itns['itn_score'] = (city_pair_itns[coefficients.columns] * coefficients)[coefficients.columns].sum(axis=1)
     city_pair_itns['exp_score'] = np.exp(city_pair_itns['itn_score'])
     city_pair_itns['probability'] = city_pair_itns['exp_score'] / city_pair_itns['exp_score'].sum()
+    city_pair_itns['demand'] = (city_pair_itns['probability'] * demand).round(2)
     
     # ----------- Calculating QSIs -----------
     
     airlines_qsi = city_pair_itns.groupby('airline_iata')['probability'].sum().to_frame()
     airlines_qsi['qsi'] = airlines_qsi['probability'] / airlines_qsi['probability'].sum()
     airlines_qsi['qsi_squared'] = np.square(airlines_qsi['probability'])
+    airlines_qsi['demand'] = (airlines_qsi['probability'] * demand).round(2)
     
     hhi_score = airlines_qsi['qsi_squared'].sum()
     
@@ -327,6 +331,14 @@ def generate_all_itineraries(routes_df, airlines):
         resultant_itns = pd.concat([resultant_itns, get_city_pair_itineraries(routes_df, city_pair, airlines)])
         
     return resultant_itns
+
+
+def get_demand(city_pair, demands):
+    demand = demands[(demands['origin'] == city_pair[0]) & (demands['destination'] == city_pair[1])]['demand']
+    if demand.size > 0:
+        return demand.iloc[0]
+    
+    return 0
     
     
 def main():
@@ -337,6 +349,7 @@ def main():
     coefficients = pd.read_excel(coefficients_filename).transpose()
     coeffs_headers = coefficients.iloc[0]
     coefficients = pd.DataFrame(coefficients.values[1: ], columns=coeffs_headers)
+    demands = pd.read_excel(demands_filename)
     
     # Transformations:
     routes_df = clean_data(raw_routes_df)
@@ -344,9 +357,10 @@ def main():
     
     # ALGO
     city_pair = ["ASW", "SSH"]
+    demand = get_demand(city_pair, demands)
+        
     cp_itns = get_city_pair_itineraries(routes_df, city_pair, airlines)
-    
-    cp_probs = get_city_pair_probabilities(cp_itns, coefficients)
+    cp_probs = get_city_pair_probabilities(cp_itns, coefficients, demand)
     
     # # Generate all itineraries
     # all_itns = generate_all_itineraries(routes_df, airlines)
