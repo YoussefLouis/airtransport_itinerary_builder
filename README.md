@@ -8,3 +8,6 @@ Inputs required are:
 - CSV with all flights in market with sufficient independent variables
 - CSV with coefficients of matching independent variables for the utility function that calculates the itinerary probabilities, those coefficients can be generated using a Multinomial Logistic Regression model
 - (optional) CSV with demands estimated across market city pairs, to calculate demands as well as the probabilities
+
+
+### Created by Abdallah Mohamed, Muhammad Atef & Youssef Fawzy - Aerospace Dept. Cairo University, Egypt - 2023
