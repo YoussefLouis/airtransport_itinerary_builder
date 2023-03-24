@@ -7,21 +7,10 @@
         Youssef Fawzy
         
     Requirements:
-        routes_manual.xlsx  --  File with routes data.
-            
-        Columns: 
-            id
-            airline_iata	
-            origin_iata	
-            deprt_time	
-            dest_iata	
-            duration	
-            engine	
-            ac_type	
-            capacity	
-            distance
-            price_usd
-            
+        routes.xlsx         --  File with market flight routes data.
+        coefficients.xlsx   --  File with coefficients generated using MLR model.
+        demands.xlsx        --  (Optional) Estimated city pair demands.
+             
 """
 
 import pandas as pd
