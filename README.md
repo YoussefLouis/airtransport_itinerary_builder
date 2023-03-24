@@ -10,7 +10,11 @@ Inputs required are:
 - (optional) CSV with demands estimated across market city pairs, to calculate demands as well as the probabilities
 
 
-### Created by Abdallah Mohamed, Muhammad Atef & Youssef Fawzy
-### Aerospace Engineering Dept.
-### Cairo University, Egypt
-### March 2023
+### Created by
+Abdallah Mohamed, Muhammad Atef & Youssef Fawzy
+
+Aerospace Engineering Dept.
+
+Cairo University, Egypt
+
+March 2023
