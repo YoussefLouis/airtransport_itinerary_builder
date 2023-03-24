@@ -1,4 +1,4 @@
-# Air Transport Market Itinierary Builder
+# Air Transport Market Itinerary Builder
 
 The itinerary builder is a tool to calculate all possible air travel itineraries from a given list of flights in an air transport market. The output of the algorithm is all possible itineraries across the cities of the market, and the probability that a traveller would choose an itinerary over the other available ones across a city pair, where a city pair is the origin city and destination city of the traveller. The algorithm also calculates the probability that an airline is picked by the traveller over others across a city pair, given their offered itineraries, the Quality of Service Index (QSI) of the airlines and the Herfindahl–Hirschman index of the city pair.
 
